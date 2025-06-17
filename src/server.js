@@ -2,23 +2,17 @@ import express from "express";
 import dotenv from "dotenv";
 import { connectDB } from "./libs/db.js";
 import router from "./routes/index.route.js";
-import cors from 'cors'
-import { app, server } from "./libs/socket.js";
+import cors from 'cors';
 
 dotenv.config();
 
-const port = process.env.PORT
+const app = express();
 
-app.use(cors({
-    origin: '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
-}));
-app.use(express.json())
+app.use(cors({ origin: '*', methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'] }));
+app.use(express.json());
+app.use('/api', router);
 
-app.use('/api', router)
 
-server.listen(port, () => {
-    console.log('Server berjalan di port' , port)
-    connectDB()
-})
+connectDB();
+
+export default app;
